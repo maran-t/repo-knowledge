@@ -83,7 +83,7 @@ export default function SearchBox() {
       {
         (repoData?.data) && <div className="results">
           <header className="section-head">
-            <h2 className="section-title">Commit log</h2>
+            <h2 className="section-title">Knowledge log</h2>
             <p className="section-meta">
               <span>{rows.length} of {repoData?.count} commits</span>
               {shownRepos.length > 0 && <span className="section-meta-repos">{shownRepos.join(", ")}</span>}
@@ -97,6 +97,7 @@ export default function SearchBox() {
                 return <tr key={i}>
                   <td>{repo.repo}</td>
                   <td>{repo.sha}</td>
+                  <td title={repo.message} style={{ maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{repo.message}</td>
                   <td>{repo.author}</td>
                   <td>{repo.committed_at}</td>
                 </tr>
@@ -106,7 +107,7 @@ export default function SearchBox() {
           </table>
 
           <div className="pager">
-            <span className="mr-4">Total Rows: {repoData?.count} | Page: {page} | Per Page: {perPage}</span>
+            <span className="mr-4">Page: {page} | Per Page: {perPage}</span>
             <button disabled={page === 1} className="btn mr-4" onClick={() => setPage(page - 1)}> {'< '} &nbsp; Prev </button>
             <button disabled={page * perPage >= repoData?.count} className="btn" onClick={() => setPage(page + 1)}> Next &nbsp; {' >'} </button>
           </div>

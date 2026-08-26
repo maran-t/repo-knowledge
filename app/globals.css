@@ -215,27 +215,47 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* ── Section head ──────────────────────────────────────────────────────── */
+/* ── Section head ──────────────────────────────────────────────────────────
+   The only place that says what the table below actually is, so it carries
+   the scope with it: how much is on screen, out of how much, from where.
+   The black rule answers the input underline in the left rail.            */
 
-/* The black rule under the title answers the input's underline in the left
-   rail, and gives the borderless table a top edge to hang from. */
 .section-head {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 13px;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--ink);
 }
 
 .section-title {
   color: var(--ink);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.section-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  color: var(--ink-2);
   font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
     monospace;
   font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.section-meta > span + span::before {
+  content: "·";
+  margin-right: 12px;
+  color: var(--ink-3);
+}
+
+.section-meta-repos {
+  color: var(--ink-3);
 }
 
 /* ── Commit log ────────────────────────────────────────────────────────── */
