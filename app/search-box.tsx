@@ -100,6 +100,25 @@ export default function SearchBox() {
           <div className="answer">{searchResult}</div>
         )
       }
+
+      {
+        !searching && !searchResult && (
+          <div className="mt-8" style={{color: '#666', fontSize: '14px'}}>
+            <p>This is a simple demo of how to use embeddings to search through commit messages in a GitHub repository. You can ingest the commits of a repo and then search for specific information within those commits.</p>
+
+            <br />
+            <p>Search for a query to get information from the ingested commits.</p>
+            <p>For example, you can try queries like:</p>
+            <ul>
+              <li>`fix bug`</li>
+              <li>`add feature`</li>
+              <li>`refactor code`</li>
+              <li>`update documentation`</li>
+            </ul>
+          </div>
+        )
+      }
+   
     </aside>
 
     <main className="content">
