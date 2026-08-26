@@ -108,12 +108,11 @@ export default function SearchBox() {
 
             <br />
             <p>Search for a query to get information from the ingested commits.</p>
-            <p>For example, you can try queries like:</p>
+            <p>For example, you can try:</p>
             <ul>
-              <li>`fix bug`</li>
-              <li>`add feature`</li>
-              <li>`refactor code`</li>
-              <li>`update documentation`</li>
+              <li>`when did they change how state is managed?`</li>
+              <li>`what security fixes have landed?`</li>
+              <li>`who has worked on the build system?`</li>
             </ul>
           </div>
         )
