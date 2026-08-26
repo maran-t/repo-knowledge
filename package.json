@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "eval": "tsx evals/run.ts",
     "lint": "eslint"
   },
   "dependencies": {
@@ -14,7 +15,8 @@
     "ai": "^7.0.79",
     "next": "16.3.2",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "tsx": "^4.23.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
