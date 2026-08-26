@@ -10,10 +10,10 @@ RETRIEVAL_DOCUMENT) → cosine similarity via pgvector → gemini-3.6-flash with
 retrieved commits as context.
 
 ## Numbers
-- Eval pass rate: 20/20
-- p50 / p95 latency: 2530 / :7174 ms
+- duration: 2530 ms - 7174 ms
 - Cost per query: 0.002
 - Corpus: ~65 commits across 4 repos
+- Eval pass rate: 20/20
 
 ## Evals
 20 golden questions with expected commits and required answer terms, plus
