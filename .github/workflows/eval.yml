@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: sleep 60          # let Vercel finish deploying
+      - run: sleep 30          # let Vercel finish deploying
       - run: npm run eval
         env:
           EVAL_URL: https://repo-knowledge.vercel.app
