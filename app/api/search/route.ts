@@ -1,3 +1,4 @@
+import { CHAT_IN, CHAT_OUT } from "@/lib/cost";
 import { db } from "@/lib/db";
 import { embedText } from "@/lib/embed"
 import { google } from "@ai-sdk/google";
@@ -9,6 +10,7 @@ export async function POST(req: Request) {
     if (!query || !repo) {
         return Response.json({error: 'query and repo are required'}, {status: 400})
     }
+    const t0 = Date.now();
 
     const queryEmbedding = await embedText([query], "RETRIEVAL_QUERY");
 
@@ -22,7 +24,6 @@ export async function POST(req: Request) {
     .map((c) => `[${c.sha.slice(0, 7)}] ${c.author}: ${c.message}`)
     .join("\n\n");
 
-    console.log(context)
 
     const result = streamText({
         model: google("gemini-3.6-flash"),
@@ -40,8 +41,14 @@ export async function POST(req: Request) {
         text += chunk;
     }
 
-    text.replace(/\*\*/g, "").replace(/`/g, "")
+    const usage = await result.usage;
 
+    console.log(JSON.stringify({
+        repo,
+        totalMs: Date.now() - t0,
+        costUsd: +(((usage.inputTokens || 0) * CHAT_IN + (usage.outputTokens || 0) * CHAT_OUT) / 1e6).toFixed(3),
+        topSimilarity: commits[0]?.similarity || null,
+    }));
 
     if (error) return Response.json({ error: error.message }, { status: 500 });
     return Response.json({ data: text });

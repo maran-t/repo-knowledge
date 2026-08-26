@@ -108,7 +108,7 @@ export default function SearchBox() {
 
             <br />
             <p>Search for a query to get information from the ingested commits.</p>
-            <p>For example, you can try:</p>
+            <p>For example, you can try:</p>ā
             <ul>
               <li>`when did they change how state is managed?`</li>
               <li>`what security fixes have landed?`</li>
@@ -148,7 +148,7 @@ export default function SearchBox() {
         </div>
         : (repoData?.data) && <div className="results">
           <header className="section-head">
-            <h2 className="section-title">Knowledge log</h2>
+            <h2 className="section-ātitle">Knowledge log</h2>
             <p className="section-meta">
               <span>{rows.length} of {repoData?.count} commits</span>
               {shownRepos.length > 0 && <span className="section-meta-repos">{shownRepos.join(", ")}</span>}
