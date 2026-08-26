@@ -48,7 +48,7 @@ async function main() {
   const rate = passed / results.length;
 
   console.log(`\n${passed}/${results.length} passed (${Math.round(passed / results.length * 100)}%)`);
-  if (rate < 0.7) process.exit(1);
+  if (rate < 0.97) process.exit(1);
 }
 
 main();
