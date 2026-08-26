@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
+/* ── Paper ────────────────────────────────────────────────────────────────
+   A white-only theme for a commit ingester. Black ink on paper, hairline
+   rules, and one electric accent reserved entirely for interaction.
+
+   Layout: a fixed left rail holds the controls (query, ingest, and any
+   filters added later); the commit log fills the right.                    */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --paper: #ffffff;
+  --ink: #0a0a0b;
+  --ink-2: #63666e;
+  --ink-3: #a8abb2;
+  --line: #e9e9ec;
+  --signal: #3b1cff;
+
+  --sidebar-width: 340px;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -12,15 +30,331 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--signal);
+  color: var(--paper);
+}
+
+/* ── Frame ─────────────────────────────────────────────────────────────── */
+
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+}
+
+/* Controls column. Stacks whatever it holds, so new blocks (filters,
+   ranges) drop in under the ingest form without further layout work. */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-self: start;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  padding: 56px 16px;
+  /* border-right: 1px solid var(--line); */
+  overflow-y: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 56px 40px;
+}
+
+.content:empty::before {
+  content: "Ingest a repository to see its commits here.";
+  max-width: 24ch;
+  margin: auto;
+  color: var(--ink-3);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* ── Wordmark ──────────────────────────────────────────────────────────── */
+
+/* Set heavy and tight against the mono utility type everywhere else, so it
+   reads as a mark rather than a label. */
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 12px;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  user-select: none;
+}
+
+.wordmark::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--signal);
+  border-radius: 50%;
+}
+
+/* ── Query ─────────────────────────────────────────────────────────────── */
+
+.search-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0 0 12px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+
+.search-input::placeholder {
+  color: var(--ink-3);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.search-input:focus {
+  border-bottom-color: var(--signal);
+  caret-color: var(--signal);
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 4px;
+  color: var(--ink-2);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:hover:not(:disabled) {
+  color: var(--signal);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  flex: 1;
+  justify-content: center;
+  padding: 12px 22px;
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  color: var(--paper);
+  background: var(--signal);
+}
+
+/* ── Status ────────────────────────────────────────────────────────────── */
+
+.status-message {
+  display: flex;
+  align-items: flex-start;
+  min-height: 22px;
+  color: var(--ink-2);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+}
+
+/* ── Section head ──────────────────────────────────────────────────────── */
+
+/* The black rule under the title answers the input's underline in the left
+   rail, and gives the borderless table a top edge to hang from. */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.section-title {
+  color: var(--ink);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Commit log ────────────────────────────────────────────────────────── */
+
+.results {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.repo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.repo-table td {
+  padding: 14px 20px 14px 0;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: color 0.15s ease;
+}
+
+.repo-table td:first-child {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.repo-table td:nth-child(2),
+.repo-table td:last-child {
+  color: var(--ink-2);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.repo-table td:nth-child(2) {
+  letter-spacing: -0.02em;
+}
+
+.repo-table td:nth-child(3) {
+  color: var(--ink-2);
+}
+
+.repo-table td:last-child {
+  padding-right: 0;
+  color: var(--ink-3);
+  text-align: right;
+}
+
+.repo-table tr:hover td {
+  color: var(--ink);
+}
+
+/* ── Pager ─────────────────────────────────────────────────────────────── */
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 18px;
+}
+
+.pager span {
+  margin-right: auto;
+  color: var(--ink-3);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+/* ── Narrow ────────────────────────────────────────────────────────────── */
+
+@media (max-width: 880px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: 40px 24px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    overflow: visible;
+  }
+
+  .content {
+    padding: 32px 24px;
+  }
+
+  .content:empty::before {
+    margin: 48px auto;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+.sidebar > span {
+  display: block;
+  margin-top: 24px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #333;
+  white-space: pre-wrap;   /* keeps the newlines the model sends */
+  word-break: break-word;  /* commit SHAs don't overflow */
 }
