@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     })
 
     const context = commits
-    .map((c) => `[${c.sha.slice(0, 7)}] ${c.author}: ${c.message}`)
+    .map((c) => `[${c.sha.slice(0, 7)}] ${c.committed_at?.slice(0,10)} ${c.author}: ${c.message}`)
     .join("\n\n");
 
 
