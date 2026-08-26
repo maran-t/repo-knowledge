@@ -1,0 +1,16 @@
+name: eval
+on: [push, workflow_dispatch]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: sleep 60          # let Vercel finish deploying
+      - run: npm run eval
+        env:
+          EVAL_URL: https://repo-knowledge.vercel.app

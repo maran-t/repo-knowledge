@@ -44,9 +44,11 @@ async function main() {
     if (r.reasons.length) console.log("      " + r.reasons.join("\n      "));
     results.push(r);
   }
-
   const passed = results.filter(r => r.pass).length;
+  const rate = passed / results.length;
+
   console.log(`\n${passed}/${results.length} passed (${Math.round(passed / results.length * 100)}%)`);
+  if (rate < 0.7) process.exit(1);
 }
 
 main();
